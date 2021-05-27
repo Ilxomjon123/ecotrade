@@ -1,5 +1,5 @@
 <template>
-  <div class="about content">
+  <div class="content">
     <div class="row">
       <categories class="col-lg-4 col-sm-12" />
       <carusel class="col-lg-8 col-sm-12" />

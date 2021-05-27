@@ -1,12 +1,11 @@
 <template>
-  <div>
-    <p class="h3 text-muted">Profile page</p>
+  <div class="p-4">
     <products />
   </div>
 </template>
 
 <script>
-import Products from "../components/Products";
+import Products from "../../components/sellers/Products";
 export default {
   components: { Products },
 };

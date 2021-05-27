@@ -2,6 +2,7 @@
   <div>
     <b-card-group columns id="products">
       <b-card
+        class="shadow"
         v-for="item in getAllProducts"
         :key="item.id"
         :title="item.name"
@@ -9,24 +10,23 @@
           item.image ? item.image : 'https://picsum.photos/300/300/?image=41'
         "
         img-alt="Image"
+        img-top
       >
-        <b-card-text v-html="item.description.substr(0, 20) + '...'" />
-        <template #footer>
-          <div class="row">
-            <div class="col-auto">
-              <p class="text-muted h4">{{ item.price }} so'm</p>
-            </div>
-            <div class="col-auto">
-              <b-button
-                pill
-                variant="warning"
-                class="text-white"
-                @click="pick(item)"
-                >Xarid qilish</b-button
-              >
-            </div>
-          </div>
-        </template>
+        <hr />
+        <p class="h4 font-weight-light bg-primary p-2">
+          <b>Narxi: </b> {{ item.price }} So'm
+        </p>
+        <hr />
+        <p class="h5 font-weight-light">
+          <b>Bonus: </b>{{ item.bonusPrice }} So'm
+        </p>
+        <p class="h5 font-weight-light"><b>Qoldi: </b>{{ item.amount }}</p>
+        <button
+          @click="createLink(item.id)"
+          class="btn btn-danger btn-sm col-sm-12 mt-3"
+        >
+          <b-icon icon="link" /> Oqim yaratish
+        </button>
       </b-card>
     </b-card-group>
     <b-pagination
@@ -54,8 +54,7 @@ export default {
     this.fetchAllProducts({ pageNumber: this.pageNumber, size: this.size });
   },
   methods: {
-    ...mapActions(["fetchAllProducts"]),
-    ...mapMutations(["setProduct"]),
+    ...mapActions(["fetchAllProducts", "fetchCreateLink"]),
     async paginate(page) {
       if (page > 1) {
         this.currentPage = page - 1;
@@ -65,9 +64,17 @@ export default {
         size: this.size,
       });
     },
-    pick(product) {
-      this.setProduct(product);
-      this.$router.push({ path: "/product/" + product.id });
+    async createLink(id) {
+      const res = await this.fetchCreateLink(id);
+      if (res) {
+        this.$toast("Oqim yaratildi!", {
+          timeout: 5000,
+        });
+        this.$router.push({ path: "/sellers/links" });
+      } else
+        this.$toast("Xatoli ro'y berdi. Qayta urinib ko'ring", {
+          timeout: 5000,
+        });
     },
   },
   computed: {
