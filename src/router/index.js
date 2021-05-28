@@ -2,8 +2,9 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
-import Profile from "../views/sellers/Profile.vue";
+import SellerProducts from "../views/sellers/Products.vue";
 import Links from "../views/sellers/Links.vue";
+import Cart from "../views/sellers/Cart.vue";
 import Product from "../views/Product.vue";
 import { actions, mutations } from "../store/index.js";
 Vue.use(VueRouter);
@@ -38,8 +39,8 @@ const routes = [
     },
   },
   {
-    path: "/sellers/profile",
-    component: Profile,
+    path: "/sellers/products",
+    component: SellerProducts,
     meta: {
       auth: true,
     },
@@ -47,6 +48,13 @@ const routes = [
   {
     path: "/sellers/links",
     component: Links,
+    meta: {
+      auth: true,
+    },
+  },
+  {
+    path: "/cart",
+    component: Cart,
     meta: {
       auth: true,
     },

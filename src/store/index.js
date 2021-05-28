@@ -12,6 +12,7 @@ export const state = {
   allProductsCount: 0,
   product: {},
   links: [],
+  cart: [],
 };
 export const getters = {
   getPhoneNumber: (state) => state.phoneNumber,
@@ -20,6 +21,7 @@ export const getters = {
   getAllProductsCount: (state) => state.allProductsCount,
   getProduct: (state) => state.product,
   getLinks: (state) => state.links,
+  getCart: (state) => state.cart,
 };
 export const mutations = {
   setProduct(state, payload) {
@@ -39,6 +41,9 @@ export const mutations = {
   },
   setLinks(state, payload) {
     state.links = payload;
+  },
+  setCart(state, payload) {
+    state.cart = payload;
   },
 };
 export const actions = {
@@ -95,6 +100,7 @@ export const actions = {
   async fetchOrder({ commit, state }, payload) {
     const res = await axios.post("/api/product/order", { ...payload });
     if (res.status == 200) {
+      commit("setCart", res.data);
       return true;
     }
     return false;
@@ -127,6 +133,36 @@ export const actions = {
     });
     if (res.status == 200) {
       commit("setLinks", res.data);
+      return true;
+    }
+    return false;
+  },
+  async destroyLink({ commit, state }, payload) {
+    const res = await axios.post(
+      "/api/links/" + payload,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("user")).accessToken
+          }`,
+        },
+      }
+    );
+    if (res.status == 200) {
+      return true;
+    }
+    return false;
+  },
+  async fetchCart({ commit, state }) {
+    const res = await axios.get("/api/cart", {
+      headers: {
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("user")).accessToken
+        }`,
+      },
+    });
+    if (res.status == 200) {
       return true;
     }
     return false;

@@ -6,6 +6,16 @@
       >
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav>
+          <b-nav-item
+            ><b-link to="/" class="text-white">Asosiy</b-link></b-nav-item
+          >
+          <b-nav-item
+            ><b-link to="/about-us" class="text-white"
+              >Biz haqimizda</b-link
+            ></b-nav-item
+          >
+        </b-navbar-nav>
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <b-nav-form>
@@ -18,7 +28,7 @@
               ><b-icon icon="search"
             /></b-button>
           </b-nav-form>
-          <router-link to="/sellers/profile">
+          <router-link to="/sellers/products">
             <b-nav-form>
               <b-button size="sm" class="rounded-circle my-2 my-sm-0 ml-2">
                 <b-icon icon="person-circle" />
@@ -26,6 +36,13 @@
             </b-nav-form>
           </router-link>
           <b-nav-form v-if="isLogged">
+            <b-button
+              size="sm"
+              class="rounded-circle my-2 my-sm-0 ml-2"
+              @click="cart"
+            >
+              <b-icon icon="cart" />
+            </b-button>
             <b-button
               size="sm"
               class="rounded-circle my-2 my-sm-0 ml-2"
@@ -41,7 +58,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -49,10 +66,14 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["fetchCart"]),
     logout() {
       localStorage.removeItem("user");
       this.$router.push({ path: "/" });
       location.reload();
+    },
+    async cart() {
+      this.$router.push({ path: "/cart" });
     },
   },
 };
