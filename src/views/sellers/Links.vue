@@ -46,7 +46,7 @@
           </b-button>
         </b-card>
       </b-card-group>
-      <h1 v-else class="text-center">Oqim yaratimagan</h1>
+      <h5 v-else class="text-center text-white">Oqim yaratimagan</h5>
     </div>
   </div>
 </template>

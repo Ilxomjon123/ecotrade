@@ -28,7 +28,7 @@
               ><b-icon icon="search"
             /></b-button>
           </b-nav-form>
-          <router-link to="/sellers/products">
+          <router-link to="/sellers/profile">
             <b-nav-form>
               <b-button size="sm" class="rounded-circle my-2 my-sm-0 ml-2">
                 <b-icon icon="person-circle" />

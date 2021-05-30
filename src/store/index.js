@@ -15,6 +15,8 @@ export const state = {
   cart: [],
   profile: {},
   paymenHistory: [],
+  lastStat: [],
+  linkStat: [],
 };
 export const getters = {
   getPhoneNumber: (state) => state.phoneNumber,
@@ -26,6 +28,8 @@ export const getters = {
   getCart: (state) => state.cart,
   getProfile: (state) => state.profile,
   getPaymentHistory: (state) => state.paymenHistory,
+  getLastStat: (state) => state.lastStat,
+  getLinkStat: (state) => state.linkStat,
 };
 export const mutations = {
   setProduct(state, payload) {
@@ -54,6 +58,12 @@ export const mutations = {
   },
   setPaymentHistory(state, payload) {
     state.paymenHistory = payload;
+  },
+  setLinkStat(state, payload) {
+    state.linkStat = payload;
+  },
+  setLastStat(state, payload) {
+    state.lastStat = payload;
   },
 };
 export const actions = {
@@ -148,17 +158,13 @@ export const actions = {
     return false;
   },
   async destroyLink({ commit, state }, payload) {
-    const res = await axios.post(
-      "/api/links/" + payload,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${
-            JSON.parse(localStorage.getItem("user")).accessToken
-          }`,
-        },
-      }
-    );
+    const res = await axios.delete("/api/links/" + payload, {
+      headers: {
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("user")).accessToken
+        }`,
+      },
+    });
     if (res.status == 200) {
       return true;
     }
@@ -219,6 +225,34 @@ export const actions = {
       }
     );
     if (res.status == 200) {
+      return true;
+    }
+    return false;
+  },
+  async fetchLastStat({ commit, state }) {
+    const res = await axios.get("/api/links/statistics?byOrder=" + true, {
+      headers: {
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("user")).accessToken
+        }`,
+      },
+    });
+    if (res.status == 200) {
+      commit("setLastStat", res.data);
+      return true;
+    }
+    return false;
+  },
+  async fetchLinkStat({ commit, state }) {
+    const res = await axios.get("/api/links/statistics?byOrder=" + false, {
+      headers: {
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("user")).accessToken
+        }`,
+      },
+    });
+    if (res.status == 200) {
+      commit("setLinkStat", res.data);
       return true;
     }
     return false;
