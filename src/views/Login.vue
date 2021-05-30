@@ -3,7 +3,7 @@
   <div class="container mt-5">
     <div class="raw">
       <div class="col-lg-4 col-md-6 col-sm-8 ml-auto mr-auto">
-        <p class="h4 text-center mb-4">ECO<b>Trade</b></p>
+        <p class="h4 text-center mb-4 text-white">ECO<b>Trade</b></p>
         <div v-if="!phoneValidated">
           <b-input
             v-model="phone"

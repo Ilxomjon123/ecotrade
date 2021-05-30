@@ -68,12 +68,12 @@ export default {
       const res = await this.fetchCreateLink(id);
       if (res) {
         this.$toast("Oqim yaratildi!", {
-          timeout: 5000,
+          timeout: 2000,
         });
         this.$router.push({ path: "/sellers/links" });
       } else
         this.$toast("Xatoli ro'y berdi. Qayta urinib ko'ring", {
-          timeout: 5000,
+          timeout: 2000,
         });
     },
   },

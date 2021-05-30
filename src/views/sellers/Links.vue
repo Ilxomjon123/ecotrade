@@ -3,6 +3,9 @@
     <nav class="nav nav-borders justify-content-center mb-4">
       <div>
         <b-button-group>
+          <b-link to="/sellers/profile" class="btn btn-dark"
+            ><b-icon icon="person" /> Profile</b-link
+          >
           <b-link to="/sellers/products" class="btn btn-dark"
             ><b-icon icon="cart" /> Mahsulotlar</b-link
           >
@@ -59,7 +62,7 @@ export default {
     ...mapActions(["fetchLinks", "destroyLink"]),
     onCopy: function(e) {
       this.$toast("Oqim linki nusxalandi", {
-        timeout: 5000,
+        timeout: 2000,
       });
     },
     onError: function(e) {

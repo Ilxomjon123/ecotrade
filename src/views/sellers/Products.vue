@@ -3,6 +3,9 @@
     <nav class="nav nav-borders justify-content-center mb-4">
       <div>
         <b-button-group>
+          <b-link to="/sellers/profile" class="btn btn-dark"
+            ><b-icon icon="person" /> Profile</b-link
+          >
           <b-link to="/sellers/products" class="btn btn-primary"
             ><b-icon icon="cart" /> Mahsulotlar</b-link
           >

@@ -35,17 +35,15 @@
               </b-button>
             </b-nav-form>
           </router-link>
+          <router-link to="/cart">
+            <b-button size="sm" class="rounded-circle my-2 my-sm-0 ml-2">
+              <b-icon icon="cart" />
+            </b-button>
+          </router-link>
           <b-nav-form v-if="isLogged">
             <b-button
               size="sm"
-              class="rounded-circle my-2 my-sm-0 ml-2"
-              @click="cart"
-            >
-              <b-icon icon="cart" />
-            </b-button>
-            <b-button
-              size="sm"
-              class="rounded-circle my-2 my-sm-0 ml-2"
+              class="rounded-circle my-2 my-sm-0 ml-2 bg-danger"
               @click="logout"
             >
               <b-icon icon="arrow-bar-right" />
@@ -71,9 +69,6 @@ export default {
       localStorage.removeItem("user");
       this.$router.push({ path: "/" });
       location.reload();
-    },
-    async cart() {
-      this.$router.push({ path: "/cart" });
     },
   },
 };

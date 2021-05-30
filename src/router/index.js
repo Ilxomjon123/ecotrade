@@ -5,6 +5,8 @@ import Login from "../views/Login.vue";
 import SellerProducts from "../views/sellers/Products.vue";
 import Links from "../views/sellers/Links.vue";
 import Cart from "../views/sellers/Cart.vue";
+import Profile from "../views/sellers/Profile.vue";
+import Statistics from "../views/sellers/Statistics.vue";
 import Product from "../views/Product.vue";
 import { actions, mutations } from "../store/index.js";
 Vue.use(VueRouter);
@@ -48,6 +50,20 @@ const routes = [
   {
     path: "/sellers/links",
     component: Links,
+    meta: {
+      auth: true,
+    },
+  },
+  {
+    path: "/sellers/profile",
+    component: Profile,
+    meta: {
+      auth: true,
+    },
+  },
+  {
+    path: "/sellers/statistics",
+    component: Statistics,
     meta: {
       auth: true,
     },

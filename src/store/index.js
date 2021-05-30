@@ -13,6 +13,8 @@ export const state = {
   product: {},
   links: [],
   cart: [],
+  profile: {},
+  paymenHistory: [],
 };
 export const getters = {
   getPhoneNumber: (state) => state.phoneNumber,
@@ -22,6 +24,8 @@ export const getters = {
   getProduct: (state) => state.product,
   getLinks: (state) => state.links,
   getCart: (state) => state.cart,
+  getProfile: (state) => state.profile,
+  getPaymentHistory: (state) => state.paymenHistory,
 };
 export const mutations = {
   setProduct(state, payload) {
@@ -44,6 +48,12 @@ export const mutations = {
   },
   setCart(state, payload) {
     state.cart = payload;
+  },
+  setProfile(state, payload) {
+    state.profile = payload;
+  },
+  setPaymentHistory(state, payload) {
+    state.paymenHistory = payload;
   },
 };
 export const actions = {
@@ -162,6 +172,52 @@ export const actions = {
         }`,
       },
     });
+    if (res.status == 200) {
+      commit("setCart", res.data);
+      return true;
+    }
+    return false;
+  },
+  async fetchProfile({ commit, state }) {
+    const res = await axios.get("/api/user/profile", {
+      headers: {
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("user")).accessToken
+        }`,
+      },
+    });
+    if (res.status == 200) {
+      commit("setProfile", res.data);
+      return true;
+    }
+    return false;
+  },
+  async fetchPaymentHistory({ commit, state }) {
+    const res = await axios.get("/api/user/payment_history", {
+      headers: {
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("user")).accessToken
+        }`,
+      },
+    });
+    if (res.status == 200) {
+      commit("setPaymentHistory", res.data);
+      return true;
+    }
+    return false;
+  },
+  async fetchPay({ commit, state }, payload) {
+    const res = await axios.post(
+      "/api/user/pay",
+      { ...payload },
+      {
+        headers: {
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("user")).accessToken
+          }`,
+        },
+      }
+    );
     if (res.status == 200) {
       return true;
     }
