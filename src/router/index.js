@@ -11,7 +11,9 @@ import Product from "../views/Product.vue";
 import Admin from "../views/admin/Index.vue";
 import ProductAdd from "../views/admin/ProductAdd.vue";
 import ProductEdit from "../views/admin/ProductEdit.vue";
+// search chala tugatish kerak
 import Search from "../views/Search.vue";
+//
 import { actions } from "../store/index.js";
 Vue.use(VueRouter);
 
