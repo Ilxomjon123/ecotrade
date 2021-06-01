@@ -7,8 +7,8 @@
             <img
               class="w-100"
               :src="
-                getProduct.image
-                  ? getProduct.image
+                getProduct.imageUrl
+                  ? getProduct.imageUrl
                   : 'https://picsum.photos/300/300/?image=41'
               "
               alt="Product"

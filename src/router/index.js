@@ -8,19 +8,25 @@ import Cart from "../views/sellers/Cart.vue";
 import Profile from "../views/sellers/Profile.vue";
 import Statistics from "../views/sellers/Statistics.vue";
 import Product from "../views/Product.vue";
-import { actions, mutations } from "../store/index.js";
+import Admin from "../views/admin/Index.vue";
+import ProductAdd from "../views/admin/ProductAdd.vue";
+import ProductEdit from "../views/admin/ProductEdit.vue";
+import Search from "../views/Search.vue";
+import { actions } from "../store/index.js";
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    name: "Home",
     component: Home,
   },
   {
     path: "/signin",
-    name: "Login",
     component: Login,
+  },
+  {
+    path: "/search",
+    component: Search,
   },
   {
     path: "*",
@@ -75,6 +81,27 @@ const routes = [
       auth: true,
     },
   },
+  {
+    path: "/admin",
+    component: Admin,
+    meta: {
+      admin: true,
+    },
+  },
+  {
+    path: "/admin/product-add",
+    component: ProductAdd,
+    meta: {
+      admin: true,
+    },
+  },
+  {
+    path: "/admin/product-edit/:id",
+    component: ProductEdit,
+    meta: {
+      admin: true,
+    },
+  },
 ];
 
 const router = new VueRouter({
@@ -85,9 +112,13 @@ const router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
   const loggedIn = localStorage.getItem("user");
-  const isAdmin = !loggedIn ? false : JSON.parse(loggedIn).accessToken;
-
-  if (to.matched.some((record) => record.meta.auth) && !isAdmin) {
+  const isAuth = !loggedIn ? false : JSON.parse(loggedIn).accessToken;
+  const isAdmin = loggedIn && JSON.parse(loggedIn).role == "ROLE_ADMIN";
+  if (to.matched.some((record) => record.meta.auth) && !isAuth) {
+    next("/signin");
+    return;
+  }
+  if (to.matched.some((record) => record.meta.admin) && !isAdmin) {
     next("/signin");
     return;
   }

@@ -17,6 +17,7 @@ export const state = {
   paymenHistory: [],
   lastStat: [],
   linkStat: [],
+  paymentRequests: [],
 };
 export const getters = {
   getPhoneNumber: (state) => state.phoneNumber,
@@ -30,6 +31,7 @@ export const getters = {
   getPaymentHistory: (state) => state.paymenHistory,
   getLastStat: (state) => state.lastStat,
   getLinkStat: (state) => state.linkStat,
+  getPaymentRequests: (state) => state.paymentRequests,
 };
 export const mutations = {
   setProduct(state, payload) {
@@ -65,6 +67,9 @@ export const mutations = {
   setLastStat(state, payload) {
     state.lastStat = payload;
   },
+  setPaymentRequests(state, payload) {
+    state.paymentRequests = payload;
+  },
 };
 export const actions = {
   async signin({ commit, state }, phoneNumber) {
@@ -96,6 +101,16 @@ export const actions = {
     if (res.status == 200) {
       commit("setAllProducts", res.data.products);
       commit("setAllProductsCount", res.data.totalElements);
+      return true;
+    }
+    return false;
+  },
+
+  async fetchSearch({ commit, state }, payload) {
+    const res = await axios.get("/api/product/search?name=" + payload);
+    if (res.status == 200) {
+      commit("setAllProducts", res.data);
+      commit("setAllProductsCount", res.data.length);
       return true;
     }
     return false;
@@ -143,6 +158,7 @@ export const actions = {
     }
     return false;
   },
+
   async fetchLinks({ commit, state }) {
     const res = await axios.get("/api/links", {
       headers: {
@@ -157,6 +173,7 @@ export const actions = {
     }
     return false;
   },
+
   async destroyLink({ commit, state }, payload) {
     const res = await axios.delete("/api/links/" + payload, {
       headers: {
@@ -170,6 +187,7 @@ export const actions = {
     }
     return false;
   },
+
   async fetchCart({ commit, state }) {
     const res = await axios.get("/api/cart", {
       headers: {
@@ -184,6 +202,7 @@ export const actions = {
     }
     return false;
   },
+
   async fetchProfile({ commit, state }) {
     const res = await axios.get("/api/user/profile", {
       headers: {
@@ -198,6 +217,7 @@ export const actions = {
     }
     return false;
   },
+
   async fetchPaymentHistory({ commit, state }) {
     const res = await axios.get("/api/user/payment_history", {
       headers: {
@@ -212,6 +232,7 @@ export const actions = {
     }
     return false;
   },
+
   async fetchPay({ commit, state }, payload) {
     const res = await axios.post(
       "/api/user/pay",
@@ -229,6 +250,7 @@ export const actions = {
     }
     return false;
   },
+
   async fetchLastStat({ commit, state }) {
     const res = await axios.get("/api/links/statistics?byOrder=" + true, {
       headers: {
@@ -243,6 +265,7 @@ export const actions = {
     }
     return false;
   },
+
   async fetchLinkStat({ commit, state }) {
     const res = await axios.get("/api/links/statistics?byOrder=" + false, {
       headers: {
@@ -257,8 +280,87 @@ export const actions = {
     }
     return false;
   },
+
+  async uploadImage({ commit, state }, payload) {
+    const formdata = new FormData();
+    formdata.append("file", payload);
+    const res = await axios.post("/api/images/upload", formdata, {
+      headers: {
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("user")).accessToken
+        }`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    if (res.status == 200) {
+      return res.data;
+    }
+    return false;
+  },
+
+  async addProduct({ commit, state }, payload) {
+    const res = await axios.post(
+      "/api/add_product",
+      { ...payload },
+      {
+        headers: {
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("user")).accessToken
+          }`,
+        },
+      }
+    );
+    if (res.status == 200) {
+      return true;
+    }
+    return false;
+  },
+
+  async editProduct({ commit, state }, payload) {
+    const res = await axios.put(
+      "/api/update_product",
+      { ...payload },
+      {
+        headers: {
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("user")).accessToken
+          }`,
+        },
+      }
+    );
+    if (res.status == 200) {
+      return true;
+    }
+    return false;
+  },
+
+  async fetchProduct({ commit, state }, payload) {
+    const res = await axios.get(`api/product/${payload}`);
+    if (res.status == 200) {
+      commit("setProduct", res.data);
+      return true;
+    }
+    return false;
+  },
+
+  async fetchPaymentRequests({ commit, state }) {
+    const res = await axios.get("/api/payment_requests", {
+      headers: {
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("user")).accessToken
+        }`,
+      },
+    });
+    if (res.status == 200) {
+      commit("setPaymentRequests", res.data);
+      return true;
+    }
+    return false;
+  },
 };
+
 export const modules = {};
+
 export default new Vuex.Store({
   state,
   getters,

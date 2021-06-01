@@ -20,11 +20,12 @@
         <b-navbar-nav class="ml-auto">
           <b-nav-form>
             <b-form-input
+              v-model="word"
               size="sm"
               class="mr-sm-2"
               placeholder="Qidiruv..."
             ></b-form-input>
-            <b-button size="sm" class="my-2 my-sm-0" type="submit"
+            <b-button size="sm" @click="search"
               ><b-icon icon="search"
             /></b-button>
           </b-nav-form>
@@ -60,15 +61,21 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      word: "",
       isLogged: !(localStorage.getItem("user") === null),
     };
   },
   methods: {
-    ...mapActions(["fetchCart"]),
+    ...mapActions(["fetchCart", "fetchSearch"]),
     logout() {
       localStorage.removeItem("user");
       this.$router.push({ path: "/" });
       location.reload();
+    },
+    async search() {
+      await this.fetchSearch(this.word);
+      this.$toast("Qidiruv yakunlandi");
+      this.$router.push({ path: "/search" });
     },
   },
 };
