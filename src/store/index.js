@@ -18,6 +18,8 @@ export const state = {
   lastStat: [],
   linkStat: [],
   paymentRequests: [],
+  operators: [],
+  operatorOrders: [],
 };
 export const getters = {
   getPhoneNumber: (state) => state.phoneNumber,
@@ -32,6 +34,8 @@ export const getters = {
   getLastStat: (state) => state.lastStat,
   getLinkStat: (state) => state.linkStat,
   getPaymentRequests: (state) => state.paymentRequests,
+  getAllOperators: (state) => state.operators,
+  getOperatorOrders: (state) => state.operatorOrders,
 };
 export const mutations = {
   setProduct(state, payload) {
@@ -70,13 +74,39 @@ export const mutations = {
   setPaymentRequests(state, payload) {
     state.paymentRequests = payload;
   },
+  setOperators(state, payload) {
+    state.operators = payload;
+  },
+  setOperatorOrders(state, payload) {
+    state.operatorOrders = payload;
+  },
 };
 export const actions = {
   async signin({ commit, state }, phoneNumber) {
-    const res = await axios.post("/api/auth/signin", { phoneNumber });
+    try {
+      const res = await axios.post("/api/auth/signin", {
+        phoneNumber,
+        headers: {
+          "Access-control-allow-origin": "*",
+        },
+      });
+      if (res.status == 200) {
+        commit("setTemproryJwt", res.data.temporaryJwt);
+        commit("setPhoneNumber", res.data.phoneNumber);
+        return true;
+      }
+      return false;
+    } catch (e) {
+      alert("Yedi: ", e);
+    }
+  },
+
+  async signinAdmin({ commit, state }, payload) {
+    const res = await axios.post("api/auth/admin_signin", {
+      ...payload,
+    });
     if (res.status == 200) {
-      commit("setTemproryJwt", res.data.temporaryJwt);
-      commit("setPhoneNumber", res.data.phoneNumber);
+      localStorage.setItem("user", JSON.stringify(res.data));
       return true;
     }
     return false;
@@ -176,6 +206,20 @@ export const actions = {
 
   async destroyLink({ commit, state }, payload) {
     const res = await axios.delete("/api/links/" + payload, {
+      headers: {
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("user")).accessToken
+        }`,
+      },
+    });
+    if (res.status == 200) {
+      return true;
+    }
+    return false;
+  },
+
+  async destroyOperator({ commit, state }, payload) {
+    const res = await axios.delete("/api/operator?operatorId=" + payload, {
       headers: {
         Authorization: `Bearer ${
           JSON.parse(localStorage.getItem("user")).accessToken
@@ -298,6 +342,24 @@ export const actions = {
     return false;
   },
 
+  async addOperator({ commit, state }, payload) {
+    const res = await axios.post(
+      "/api/operator",
+      { ...payload },
+      {
+        headers: {
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("user")).accessToken
+          }`,
+        },
+      }
+    );
+    if (res.status == 200) {
+      return true;
+    }
+    return false;
+  },
+
   async addProduct({ commit, state }, payload) {
     const res = await axios.post(
       "/api/add_product",
@@ -333,6 +395,23 @@ export const actions = {
     }
     return false;
   },
+  async editOrder({ commit, state }, payload) {
+    const res = await axios.put(
+      "/api/operator/orders",
+      { ...payload },
+      {
+        headers: {
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("user")).accessToken
+          }`,
+        },
+      }
+    );
+    if (res.status == 200) {
+      return true;
+    }
+    return false;
+  },
 
   async fetchProduct({ commit, state }, payload) {
     const res = await axios.get(`api/product/${payload}`);
@@ -353,6 +432,36 @@ export const actions = {
     });
     if (res.status == 200) {
       commit("setPaymentRequests", res.data);
+      return true;
+    }
+    return false;
+  },
+
+  async fetchAllOperators({ commit, state }) {
+    const res = await axios.get("/api/operator", {
+      headers: {
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("user")).accessToken
+        }`,
+      },
+    });
+    if (res.status == 200) {
+      commit("setOperators", res.data);
+      return true;
+    }
+    return false;
+  },
+
+  async fetchOperatorOrders({ commit, state }, payload) {
+    const res = await axios.get("api/operator/orders?status=" + payload, {
+      headers: {
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("user")).accessToken
+        }`,
+      },
+    });
+    if (res.status == 200) {
+      commit("setOperatorOrders", res.data);
       return true;
     }
     return false;

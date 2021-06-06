@@ -9,6 +9,9 @@ import Profile from "../views/sellers/Profile.vue";
 import Statistics from "../views/sellers/Statistics.vue";
 import Product from "../views/Product.vue";
 import Admin from "../views/admin/Index.vue";
+import Operator from "../views/operator/Index.vue";
+import AdminLogin from "../views/admin/Login.vue";
+import OperatorAdd from "../views/admin/OperatorAdd.vue";
 import ProductAdd from "../views/admin/ProductAdd.vue";
 import ProductEdit from "../views/admin/ProductEdit.vue";
 // search chala tugatish kerak
@@ -84,8 +87,19 @@ const routes = [
     },
   },
   {
+    path: "/admin/login",
+    component: AdminLogin,
+  },
+  {
     path: "/admin",
     component: Admin,
+    meta: {
+      admin: true,
+    },
+  },
+  {
+    path: "/admin/operator-add",
+    component: OperatorAdd,
     meta: {
       admin: true,
     },
@@ -104,6 +118,13 @@ const routes = [
       admin: true,
     },
   },
+  {
+    path: "/operator",
+    component: Operator,
+    meta: {
+      operator: true,
+    },
+  },
 ];
 
 const router = new VueRouter({
@@ -116,12 +137,17 @@ router.beforeEach(async (to, from, next) => {
   const loggedIn = localStorage.getItem("user");
   const isAuth = !loggedIn ? false : JSON.parse(loggedIn).accessToken;
   const isAdmin = loggedIn && JSON.parse(loggedIn).role == "ROLE_ADMIN";
+  const isOperator = loggedIn && JSON.parse(loggedIn).role == "ROLE_OPERATOR";
   if (to.matched.some((record) => record.meta.auth) && !isAuth) {
     next("/signin");
     return;
   }
   if (to.matched.some((record) => record.meta.admin) && !isAdmin) {
-    next("/signin");
+    next("/admin/login");
+    return;
+  }
+  if (to.matched.some((record) => record.meta.operator) && !isOperator) {
+    next("/admin/login");
     return;
   }
   if (to.matched.some((record) => record.meta.productById)) {

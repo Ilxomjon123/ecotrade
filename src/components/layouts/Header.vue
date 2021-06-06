@@ -50,6 +50,15 @@
               <b-icon icon="arrow-bar-right" />
             </b-button>
           </b-nav-form>
+          <b-nav-form v-if="isAdmin">
+            <router-link
+              size="sm"
+              class="rounded-circle my-2 my-sm-0 ml-2 bg-danger"
+              to="/admin"
+            >
+              <b-icon icon="arrow-bar-right" />
+            </router-link>
+          </b-nav-form>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -62,6 +71,9 @@ export default {
   data() {
     return {
       word: "",
+      isAdmin:
+        localStorage.getItem("user") &&
+        JSON.parse(localStorage.getItem("user")).role == "Role_ADMIN",
       isLogged: !(localStorage.getItem("user") === null),
     };
   },

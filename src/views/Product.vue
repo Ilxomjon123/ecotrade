@@ -16,7 +16,7 @@
           </div>
           <div class="col-sm-6 text-center mt-3">
             <p class="h1 font-weight-light">{{ getProduct.name }}</p>
-            <p>{{ getProduct.description }}</p>
+            <p v-html="getProduct.description"></p>
             <hr />
             <p class="h4 font-weight-light">
               <b>Narxi: </b> {{ getProduct.price }} So'm

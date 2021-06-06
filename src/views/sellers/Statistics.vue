@@ -79,7 +79,7 @@
                 <div class="table-responsive">
                   <table class="table">
                     <thead>
-                      <tr>
+                      <tr class="text-center">
                         <th>Oqim</th>
                         <th>Buyurtmachi</th>
                         <th>Address</th>
@@ -91,7 +91,7 @@
                     <tbody class="text-center">
                       <tr v-for="(item, index) in getLastStat" :key="index">
                         <td>{{ item.name }}</td>
-                        <td>{{ item.user.name }}</td>
+                        <td>{{ item.link.user.phoneNumber }}</td>
                         <td>{{ item.address }}</td>
                         <td>{{ item.status }}</td>
                         <td>{{ item.description }}</td>
