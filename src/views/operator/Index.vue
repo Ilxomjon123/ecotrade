@@ -29,8 +29,12 @@
             <td>{{ item.createdDate.substr(0, 10) }}</td>
             <td>{{ item.status }}</td>
             <td>
-              <b-button v-b-modal.modal-1 variant="info" @click="pickItem(item)"
-                ><b-icon icon="menu-up"
+              <b-button
+                v-if="item.status == 'NEW' || item.status == 'RECALL'"
+                v-b-modal.modal-1
+                variant="info"
+                @click="pickItem(item)"
+                ><b-icon icon="pencil"
               /></b-button>
             </td>
           </tr>
@@ -66,8 +70,8 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 export default {
-  created() {
-    this.fetchOperatorOrders(this.status);
+  async created() {
+    await this.fetchOperatorOrders(this.status);
   },
   data() {
     return {

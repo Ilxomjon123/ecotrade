@@ -102,9 +102,10 @@
                 <div class="col-md-9">
                   <div class="form-group bmd-form-group is-filled">
                     <input
-                      type="text"
+                      type="number"
                       class="form-control"
                       placeholder="Kamida 40 000so'm yechishingiz mumkin"
+                      min="40000"
                       v-model="summa"
                     />
                   </div>

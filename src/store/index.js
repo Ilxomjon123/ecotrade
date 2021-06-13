@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 
-axios.defaults.baseURL = "https://nusratillo-springboot-app.herokuapp.com";
+axios.defaults.baseURL = "http://165.227.47.214:8080";
 Vue.use(Vuex);
 
 export const state = {

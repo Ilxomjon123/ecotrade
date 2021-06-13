@@ -7,7 +7,9 @@
         :key="item.id"
         :title="item.name"
         :img-src="
-          item.image ? item.image : 'https://picsum.photos/300/300/?image=41'
+          item.imageUrl
+            ? item.imageUrl
+            : 'https://picsum.photos/300/300/?image=41'
         "
         img-alt="Image"
         img-top

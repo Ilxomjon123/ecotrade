@@ -91,11 +91,11 @@
                     <tbody class="text-center">
                       <tr v-for="(item, index) in getLastStat" :key="index">
                         <td>{{ item.name }}</td>
-                        <td>{{ item.link.user.phoneNumber }}</td>
+                        <td>{{ item.phoneNumber }}</td>
                         <td>{{ item.address }}</td>
                         <td>{{ item.status }}</td>
                         <td>{{ item.description }}</td>
-                        <td>{{ item.createdDate }}</td>
+                        <td>{{ item.createdDate.substr(0, 10) }}</td>
                       </tr>
                     </tbody>
                   </table>
