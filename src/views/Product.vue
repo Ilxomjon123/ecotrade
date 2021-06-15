@@ -11,6 +11,7 @@
                   ? getProduct.imageUrl
                   : 'https://picsum.photos/300/300/?image=41'
               "
+              height="300"
               alt="Product"
             />
           </div>
@@ -91,9 +92,13 @@
 <script>
 import { mapActions } from "vuex";
 export default {
+  created() {
+    this.getProduct = JSON.parse(localStorage.getItem("product"));
+    localStorage.removeItem("product");
+  },
   data() {
     return {
-      getProduct: JSON.parse(localStorage.getItem("product")),
+      getProduct: {},
       form: {
         name: "",
         phoneNumber: "",

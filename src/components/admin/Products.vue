@@ -22,7 +22,7 @@
         <tr v-for="item in getAllProducts" :key="item.id">
           <td>
             <img
-              width="200px"
+              width="100"
               :src="
                 item.imageUrl
                   ? item.imageUrl

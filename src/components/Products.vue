@@ -11,6 +11,7 @@
             : 'https://picsum.photos/300/300/?image=41'
         "
         img-alt="Image"
+        img-height="300"
       >
         <b-card-text v-html="item.description.substr(0, 20) + '...'" />
         <template #footer>
