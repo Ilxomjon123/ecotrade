@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-form @submit.prevent="onSubmit" class="p-2 bg-light m-5">
+    <b-form @submit.prevent="onSubmit" class="p-2 bg-light m-1">
       <b-form-group label="Nomi:">
         <b-form-input v-model="form.name" type="text" required></b-form-input>
       </b-form-group>

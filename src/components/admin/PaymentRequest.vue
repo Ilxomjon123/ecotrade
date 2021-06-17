@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="table-responsive">
     <table class="table bg-light table-hover table-bordered">
       <thead>
         <th>Telefon raqami</th>

@@ -6,26 +6,28 @@
     >
       <b-icon icon="plus" />
     </router-link>
-    <table class="table table-hover bg-light text-center">
-      <thead>
-        <tr>
-          <th>Nomi</th>
-          <th>Telefon raqami</th>
-          <th>Amallar</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in getAllOperators" :key="item.id">
-          <td>{{ item.name }}</td>
-          <td>{{ item.phoneNumber }}</td>
-          <td>
-            <b-button variant="danger" size="sm" @click="destroy(item.id)"
-              ><b-icon icon="trash"
-            /></b-button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table class="table table-hover bg-light text-center">
+        <thead>
+          <tr>
+            <th>Nomi</th>
+            <th>Telefon raqami</th>
+            <th>Amallar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in getAllOperators" :key="item.id">
+            <td>{{ item.name }}</td>
+            <td>{{ item.phoneNumber }}</td>
+            <td>
+              <b-button variant="danger" size="sm" @click="destroy(item.id)"
+                ><b-icon icon="trash"
+              /></b-button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
