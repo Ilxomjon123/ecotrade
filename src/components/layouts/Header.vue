@@ -2,7 +2,7 @@
   <div>
     <b-navbar toggleable="lg" type="dark" variant="dark">
       <b-link to="/"
-        ><b-navbar-brand>ECO<b>Trade</b></b-navbar-brand></b-link
+        ><b-navbar-brand><b>Asl-Shifo</b></b-navbar-brand></b-link
       >
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>

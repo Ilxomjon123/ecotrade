@@ -4,7 +4,7 @@
     <div class="raw">
       <div class="col-lg-4 col-md-6 col-sm-8 ml-auto mr-auto">
         <p class="h4 text-center mb-4 text-white">
-          ECO<b>Trade</b> Admin Panel
+          <b>Asl-Shifo</b> Admin Panel
         </p>
         <b-form @submit.prevent="sign_in">
           <b-input

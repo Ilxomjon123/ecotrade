@@ -4,6 +4,9 @@
       <b-tab title="Mahsulotlar" active>
         <products />
       </b-tab>
+      <b-tab title="Buyurtmalar">
+        <orders />
+      </b-tab>
       <b-tab title="Operatorlar"
         ><p><operators /></p
       ></b-tab>
@@ -16,12 +19,14 @@
 import Operators from "../../components/admin/Operators.vue";
 import PaymentRequest from "../../components/admin/PaymentRequest.vue";
 import Products from "../../components/admin/Products.vue";
+import Orders from "../../components/operator/Orders.vue";
 
 export default {
   components: {
     Products,
     PaymentRequest,
     Operators,
+    Orders,
   },
 };
 </script>
