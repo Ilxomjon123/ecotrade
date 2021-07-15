@@ -71,7 +71,7 @@
         </tbody>
         <tbody v-else>
           <tr>
-            <td colspan="8" class="bg-light">
+            <td colspan="10" class="bg-light">
               {{ status }} holatida buyurtmalar mavjud emas
             </td>
           </tr>
@@ -108,15 +108,12 @@ export default {
       productId: null,
     });
     await this.fetchOperatorSumm();
-  },
-  async mounted() {
-    this.products = await this.getAllProducts.map((item) => {
+    this.products = this.getAllProducts.map((item) => {
       return {
         value: item.id,
         text: item.name,
       };
     });
-    console.log(this.products);
     this.products = [{ value: null, text: "Tanlang" }, ...this.products];
   },
   data() {
