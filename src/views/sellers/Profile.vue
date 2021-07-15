@@ -93,6 +93,22 @@
                       type="number"
                       class="form-control"
                       v-model="cardNumber"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <label class="col-md-3 col-form-label"
+                  >Karta egasi Ism Familiyasini kiriting</label
+                >
+                <div class="col-md-9">
+                  <div class="form-group has-default bmd-form-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      required
+                      v-model="cardHolderName"
                     />
                   </div>
                 </div>
@@ -106,6 +122,7 @@
                       class="form-control"
                       placeholder="Kamida 40 000so'm yechishingiz mumkin"
                       min="40000"
+                      required
                       v-model="summa"
                     />
                   </div>
@@ -160,6 +177,7 @@ export default {
     return {
       summa: "",
       cardNumber: "",
+      cardHolderName: "",
     };
   },
   created() {
@@ -170,16 +188,17 @@ export default {
     async onSubmit(e) {
       const cardNumber = this.cardNumber;
       const summa = this.summa;
-      const res = await this.fetchPay({ cardNumber, summa });
-      if (res) {
-        this.$toast(
-          "So'rovingiz qabul qilindi. Tez orada operatorlarimiz siz bilan bog'lanishadi",
-          {
+      const cardHolderName = this.cardHolderName;
+      try {
+        const res = await this.fetchPay({ cardNumber, summa, cardHolderName });
+        if (res) {
+          this.$toast(res, {
             timeout: 2000,
-          }
-        );
-      } else {
-        this.$toast("Xatolik yuz berdi. Qayta urinib ko'ring", {
+          });
+        }
+      } catch (e) {
+        this.$toast("Mablag' yetarli emas", {
+          type: "error",
           timeout: 2000,
         });
       }

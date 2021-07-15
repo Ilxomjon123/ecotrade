@@ -1,18 +1,46 @@
 <template>
   <div>
-    <b-form-select
-      v-model="status"
-      :options="statuses"
-      @change="change"
-    ></b-form-select>
+    <h4 class="text-white">Balans: {{ getOperatorSumm }} So'm</h4>
     <div class="table-responsive">
-      <table class="table table-hover text-center bg-white mt-2">
+      <table class="table table-bordered table-hover text-center bg-light mt-2">
         <thead>
+          <tr>
+            <th></th>
+            <th></th>
+            <th>
+              <b-form-select
+                :options="addresses"
+                v-model="address"
+                @change="change"
+              ></b-form-select>
+            </th>
+            <th>
+              <b-form-select
+                v-model="productId"
+                :options="products"
+                @change="change"
+              ></b-form-select>
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>
+              <b-form-select
+                v-model="status"
+                :options="statuses"
+                @change="change"
+              ></b-form-select>
+            </th>
+            <th></th>
+          </tr>
           <tr>
             <th>Buyurtmachi</th>
             <th>Telefon raqami</th>
             <th>Manzil</th>
             <th>Mahsulot</th>
+            <th>Soni</th>
+            <th>Tasnif</th>
             <th>Mahsulot narxi</th>
             <th>Buyurtma vaqti</th>
             <th>Holati</th>
@@ -24,8 +52,10 @@
             <td>{{ item.name }}</td>
             <td>{{ item.phoneNumber }}</td>
             <td>{{ item.address }}</td>
-            <td>{{ item.link.product.name }}</td>
-            <td>{{ item.link.product.price }} SO'M</td>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.amount }}</td>
+            <td>{{ item.description }}</td>
+            <td>{{ item.product.price }} So'm</td>
             <td>{{ item.createdDate.substr(0, 10) }}</td>
             <td>{{ item.status }}</td>
             <td>
@@ -71,32 +101,75 @@
 import { mapActions, mapGetters } from "vuex";
 export default {
   async created() {
-    await this.fetchOperatorOrders(this.status);
+    await this.fetchAllProducts({ pageNumber: 0, size: 1000 });
+    await this.fetchOperatorOrders({
+      status: "NEW",
+      region: null,
+      productId: null,
+    });
+    await this.fetchOperatorSumm();
+  },
+  async mounted() {
+    this.products = await this.getAllProducts.map((item) => {
+      return {
+        value: item.id,
+        text: item.name,
+      };
+    });
+    console.log(this.products);
+    this.products = [{ value: null, text: "Tanlang" }, ...this.products];
   },
   data() {
     return {
+      products: [],
+      productId: null,
+      address: null,
       comment: "",
       status: "NEW",
       itemStatus: "NEW",
       pickedItem: {},
       statuses: [
-        { value: "NEW", text: "NEW" },
-        { value: "RECALL", text: "RECALL" },
-        { value: "ACCEPTED", text: "ACCEPTED" },
-        { value: "ARCHIVE", text: "ARCHIVE" },
-        { value: "ENROUTE", text: "ENROUTE" },
-        { value: "DEFECTIVE_PRODUCT", text: "DEFECTIVE_PRODUCT" },
-        { value: "CANCELED", text: "CANCELED" },
+        { value: "NEW", text: "Yangi" },
+        { value: "READY_FOR_DELIVERY", text: "Yetkazish uchun tayyor" },
+        { value: "THEN_TAKE", text: "Keyin oladi" },
+        { value: "DELIVERED", text: "Yetkazildi" },
+        { value: "ARCHIVED", text: "Arxivlandi" },
+        { value: "DEFECTIVE_PRODUCT", text: "Yaroqsiz mahsulot" },
+        { value: "CANCELED", text: "Bekor qilindi" },
+      ],
+      addresses: [
+        { value: null, text: "Tanlang" },
+        { value: "Toshkent", text: "Toshkent" },
+        { value: "Namangan", text: "Namangan" },
+        { value: "Andijon", text: "Andijon" },
+        { value: "Fargona", text: "Fargona" },
+        { value: "Jizzax", text: "Jizzax" },
+        { value: "Sirdaryo", text: "Sirdaryo" },
+        { value: "Samarqand", text: "Samarqand" },
+        { value: "Buxoro", text: "Buxoro" },
+        { value: "Navoiy", text: "Navoiy" },
+        { value: "Qoraqalpog'iston", text: "Qoraqalpog'iston" },
+        { value: "Xorazm", text: "Xorazm" },
+        { value: "Surxondaryo", text: "Surxondaryo" },
+        { value: "Qashqadaryo", text: "Qashqadaryo" },
       ],
     };
   },
   computed: {
-    ...mapGetters(["getOperatorOrders"]),
+    ...mapGetters(["getOperatorOrders", "getOperatorSumm", "getAllProducts"]),
   },
   methods: {
-    ...mapActions(["fetchOperatorOrders", "editOrder"]),
+    ...mapActions([
+      "fetchOperatorOrders",
+      "editOrder",
+      "fetchOperatorSumm",
+      "fetchAllProducts",
+    ]),
     change() {
-      this.fetchOperatorOrders(this.status);
+      const status = this.status;
+      const region = this.address;
+      const productId = this.productId;
+      this.fetchOperatorOrders({ status, region, productId });
     },
     updateStatus() {
       const newStatus = this.pickedItem.status;

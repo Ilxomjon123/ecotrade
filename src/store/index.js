@@ -8,6 +8,7 @@ Vue.use(Vuex);
 export const state = {
   temporaryJwt: null,
   phoneNumber: null,
+  operatorSumm: null,
   allProducts: [],
   allProductsCount: 0,
   product: {},
@@ -36,6 +37,7 @@ export const getters = {
   getPaymentRequests: (state) => state.paymentRequests,
   getAllOperators: (state) => state.operators,
   getOperatorOrders: (state) => state.operatorOrders,
+  getOperatorSumm: (state) => state.operatorSumm,
 };
 export const mutations = {
   setProduct(state, payload) {
@@ -79,6 +81,9 @@ export const mutations = {
   },
   setOperatorOrders(state, payload) {
     state.operatorOrders = payload;
+  },
+  setOperatorSumm(state, payload) {
+    state.operatorSumm = payload;
   },
 };
 export const actions = {
@@ -289,10 +294,7 @@ export const actions = {
         },
       }
     );
-    if (res.status == 200) {
-      return true;
-    }
-    return false;
+    return res.data.message;
   },
 
   async fetchLastStat({ commit, state }) {
@@ -305,6 +307,21 @@ export const actions = {
     });
     if (res.status == 200) {
       commit("setLastStat", res.data);
+      return true;
+    }
+    return false;
+  },
+
+  async fetchOperatorSumm({ commit, state }) {
+    const res = await axios.get("/api/operator/summa", {
+      headers: {
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("user")).accessToken
+        }`,
+      },
+    });
+    if (res.status == 200) {
+      commit("setOperatorSumm", res.data);
       return true;
     }
     return false;
@@ -453,7 +470,7 @@ export const actions = {
   },
 
   async fetchOperatorOrders({ commit, state }, payload) {
-    const res = await axios.get("api/operator/orders?status=" + payload, {
+    const res = await axios.post("/api/operator/orders", payload, {
       headers: {
         Authorization: `Bearer ${
           JSON.parse(localStorage.getItem("user")).accessToken
