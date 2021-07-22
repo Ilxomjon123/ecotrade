@@ -21,6 +21,7 @@ export const state = {
   paymentRequests: [],
   operators: [],
   operatorOrders: [],
+  attachedOrders: [],
 };
 export const getters = {
   getPhoneNumber: (state) => state.phoneNumber,
@@ -37,6 +38,7 @@ export const getters = {
   getPaymentRequests: (state) => state.paymentRequests,
   getAllOperators: (state) => state.operators,
   getOperatorOrders: (state) => state.operatorOrders,
+  getAttachedOrders: (state) => state.attachedOrders,
   getOperatorSumm: (state) => state.operatorSumm,
 };
 export const mutations = {
@@ -84,6 +86,9 @@ export const mutations = {
   },
   setOperatorSumm(state, payload) {
     state.operatorSumm = payload;
+  },
+  setAttachedOrders(state, payload) {
+    state.attachedOrders = payload;
   },
 };
 export const actions = {
@@ -413,17 +418,30 @@ export const actions = {
     return false;
   },
   async editOrder({ commit, state }, payload) {
-    const res = await axios.put(
-      "/api/operator/orders",
-      { ...payload },
-      {
-        headers: {
-          Authorization: `Bearer ${
-            JSON.parse(localStorage.getItem("user")).accessToken
-          }`,
-        },
-      }
-    );
+    console.log(payload);
+    const res = await axios.put("/api/operator/orders", payload, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("user")).accessToken
+        }`,
+      },
+    });
+    if (res.status == 200) {
+      return true;
+    }
+    return false;
+  },
+  async attachOrder({ commit, state }, payload) {
+    console.log(payload);
+    const res = await axios.put("/api/operator/attach_order", payload, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("user")).accessToken
+        }`,
+      },
+    });
     if (res.status == 200) {
       return true;
     }
@@ -464,6 +482,20 @@ export const actions = {
     });
     if (res.status == 200) {
       commit("setOperators", res.data);
+      return true;
+    }
+    return false;
+  },
+  async fetchAttachedOrders({ commit, state }) {
+    const res = await axios.get("/api/operator/attached_orders", {
+      headers: {
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("user")).accessToken
+        }`,
+      },
+    });
+    if (res.status == 200) {
+      commit("setAttachedOrders", res.data);
       return true;
     }
     return false;
